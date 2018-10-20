@@ -1,4 +1,4 @@
-package com.example.kbzdz.cryptocurrency_forcast;
+package com.forecast.app.cryptocurrencyForcast;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

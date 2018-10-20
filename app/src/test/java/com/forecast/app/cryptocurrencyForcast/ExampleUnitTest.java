@@ -1,4 +1,4 @@
-package com.example.kbzdz.cryptocurrency_forcast;
+package com.forecast.app.cryptocurrencyForcast;
 
 import org.junit.Test;
 
