@@ -1,7 +1,9 @@
 package com.forecast.app.cryptocurrencyForcast;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,7 +23,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity {
     ActivityDashboardBinding dashboardBinding;
     Cryptocurrency cryptocurrency;
     ApiClient client;
@@ -30,18 +32,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        setSupportActionBar(dashboardBinding.include.toolbar);
+        DrawerLayout drawer = dashboardBinding.drawerLayout;
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawer, dashboardBinding.include.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        dashboardBinding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        setupNavigationView(dashboardBinding.navView);
 
         client = new ApiClient();
         getBitcoinPLN();
@@ -73,6 +73,33 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     }
 
+    private void setupNavigationView(NavigationView navigationView) {
+        // navigationView.menu.findItem(R.id.nav_my_tracks).isEnabled = true //isLoggedIn
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Log.i("nav", menuItem.toString());
+                switchFragmentByMenuItem(menuItem);
+                dashboardBinding.drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+
+
+    }
+
+    private void switchFragmentByMenuItem(MenuItem menuItem) {
+        int id = 1;
+
+        Log.i("id", menuItem.toString());
+        switch (id) {
+            case 1:
+                Intent intent = new Intent(this, ForecastActivity.class);
+                startActivity(intent);
+
+
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -104,25 +131,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_prognoza) {
-
-        } else if (id == R.id.nav_alarm) {
-
-        } else if (id == R.id.nav_ulubione) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
 
