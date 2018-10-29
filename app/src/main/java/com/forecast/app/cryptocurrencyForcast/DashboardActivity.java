@@ -34,7 +34,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         setupNavigationView(dashboardBinding.navView);
 
-
     }
 
 
@@ -54,23 +53,27 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void switchFragmentByMenuItem(MenuItem menuItem) {
-        int id = 1;
+        int id = menuItem.getItemId();
 
         Log.i("id", menuItem.toString());
-        switch (id) {
-            case 1:
-                setTitle("Prognoza");
-                PrognozaFragment fragment = new PrognozaFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment, "Prognoza");
-                fragmentTransaction.commit();
-
-
-
-//                Intent intent = new Intent(this, ForecastActivity.class);
-//                startActivity(intent);
-
-
+        if (id == R.id.nav_prognoza) {
+            setTitle("Prognoza");
+            PrognozaFragment fragment = new PrognozaFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment, "Prognoza");
+            fragmentTransaction.commit();
+        } else if (id == R.id.nav_alarm) {
+            setTitle("Alarm");
+            AlarmFragment fragment = new AlarmFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment, "Alarm");
+            fragmentTransaction.commit();
+        } else if (id == R.id.nav_ulubione) {
+            setTitle("Ulubione");
+            UlubioneFragment fragment = new UlubioneFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment, "Ulubione");
+            fragmentTransaction.commit();
         }
     }
 

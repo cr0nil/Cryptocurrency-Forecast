@@ -1,7 +1,7 @@
 package com.forecast.app.cryptocurrencyForcast;
 
 public class Cryptocurrency {
-private static final String TAG = "Cryptocurrency";
+    private static final String TAG = "Cryptocurrency";
     double last;
     double low;
     double high;
