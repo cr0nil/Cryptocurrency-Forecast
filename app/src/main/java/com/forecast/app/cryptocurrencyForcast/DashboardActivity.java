@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.forecast.app.cryptocurrencyForcast.databinding.ActivityDashboardBinding;
 
 public class DashboardActivity extends AppCompatActivity {
+    public static final String apiKey = "afe26b6470a607194e6de734afb1b497596211699e7704348f315da0c74ac1e6";
     ActivityDashboardBinding dashboardBinding;
 
 

@@ -56,6 +56,7 @@ public class UlubioneFragment extends Fragment {
                 super.onSuccess(statusCode, headers, response);
 
                 try {
+
                     cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
                     ulubioneBinding.setCrypto(cryptocurrency);
                 } catch (JSONException e) {
