@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_kursy"
+            android:icon="@drawable/ic_kursy"
+            android:title="Kursy" />
+        <item
             android:id="@+id/nav_prognoza"
             android:icon="@drawable/ic_prognoza"
             android:title="Prognoza" />

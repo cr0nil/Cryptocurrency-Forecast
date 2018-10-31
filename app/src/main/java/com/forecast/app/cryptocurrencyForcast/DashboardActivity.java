@@ -34,6 +34,12 @@ public class DashboardActivity extends AppCompatActivity {
 
         setupNavigationView(dashboardBinding.navView);
 
+        setTitle("Kursy");
+        KursyFragment fragment = new KursyFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment, "Kursy");
+        fragmentTransaction.commit();
+
     }
 
 
@@ -56,7 +62,13 @@ public class DashboardActivity extends AppCompatActivity {
         int id = menuItem.getItemId();
 
         Log.i("id", menuItem.toString());
-        if (id == R.id.nav_prognoza) {
+        if (id == R.id.nav_kursy) {
+            setTitle("Kursy");
+            KursyFragment fragment = new KursyFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment, "Kursy");
+            fragmentTransaction.commit();
+        } else if (id == R.id.nav_prognoza) {
             setTitle("Prognoza");
             PrognozaFragment fragment = new PrognozaFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
