@@ -4,6 +4,8 @@ package com.forecast.app.cryptocurrencyForcast;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import cz.msebera.android.httpclient.Header;
 
 
@@ -25,8 +29,10 @@ import cz.msebera.android.httpclient.Header;
 public class KursyFragment extends Fragment {
     FragmentKursyBinding kursyBinding;
     Cryptocurrency cryptocurrency;
-    Cryptocurrency cryptocurrency1;
     ApiClient client;
+
+    RecyclerViewAdapter mRecyclerViewAdapter;
+    RecyclerView recyclerView;
 
 
     public KursyFragment() {
@@ -38,19 +44,35 @@ public class KursyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        kursyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_kursy, container, false);
-
-        View view = kursyBinding.getRoot();
+        //kursyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_kursy, container, false);
+        //View view = kursyBinding.getRoot();
 
         client = new ApiClient();
         getBitcoinPLN();
-        getBitcoinEUR();
-        getLiteCoinPLN();
-        getEthereumPLN();
-        getBTGoldPLN();
-        return view;
 
-        //return inflater.inflate(R.layout.fragment_kursy, container, false);
+
+        View view =  inflater.inflate(R.layout.fragment_kursy, container, false);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        //initRecyclerView();
+
+        initializeAdapter();
+
+        return view;
+    }
+
+
+//    public void initRecyclerView(){
+//
+//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mNames);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//    }
+
+    public void initializeAdapter() {
+        mRecyclerViewAdapter = new RecyclerViewAdapter(new ArrayList<Cryptocurrency>(), getContext());
+        recyclerView.setAdapter(mRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
 
@@ -64,107 +86,7 @@ public class KursyFragment extends Fragment {
 
                 try {
                     cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
-                    kursyBinding.setBTCPLN(cryptocurrency);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.i("data", String.valueOf(response));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-
-    }
-
-    public void getBitcoinEUR() {
-        String url = "json/BTCEUR/ticker.json";
-
-        client.getCryptocurrency(url, null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-
-                try {
-                    cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
-                    kursyBinding.setBTCEUR(cryptocurrency);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.i("data", String.valueOf(response));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-
-    }
-
-    public void getLiteCoinPLN() {
-        String url = "json/LTCPLN/ticker.json";
-
-        client.getCryptocurrency(url, null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-
-                try {
-                    cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
-                    kursyBinding.setLTCPLN(cryptocurrency);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.i("data", String.valueOf(response));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-
-    }
-
-    public void getEthereumPLN() {
-        String url = "json/ETHPLN/ticker.json";
-
-        client.getCryptocurrency(url, null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-
-                try {
-                    cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
-                    kursyBinding.setETHPLN(cryptocurrency);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.i("data", String.valueOf(response));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
-
-    }
-
-    public void getBTGoldPLN() {
-        String url = "json/BTGPLN/ticker.json";
-
-        client.getCryptocurrency(url, null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-
-                try {
-                    cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
-                    kursyBinding.setBTGPLN(cryptocurrency);
+                    //kursyBinding.setCrypto(cryptocurrency);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
