@@ -27,12 +27,12 @@ import cz.msebera.android.httpclient.Header;
  * A simple {@link Fragment} subclass.
  */
 public class KursyFragment extends Fragment {
-    FragmentKursyBinding kursyBinding;
+    FragmentKursyBinding fragmentKursyBinding;
     Cryptocurrency cryptocurrency;
     ApiClient client;
 
-    RecyclerViewAdapter mRecyclerViewAdapter;
-    RecyclerView recyclerView;
+   // RecyclerViewAdapter mRecyclerViewAdapter;
+    //RecyclerView recyclerView;
 
 
     public KursyFragment() {
@@ -44,19 +44,19 @@ public class KursyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //kursyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_kursy, container, false);
-        //View view = kursyBinding.getRoot();
+        fragmentKursyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_kursy, container, false);
+        View view = fragmentKursyBinding.getRoot();
 
         client = new ApiClient();
         getBitcoinPLN();
 
 
-        View view =  inflater.inflate(R.layout.fragment_kursy, container, false);
+      //  View view =  inflater.inflate(R.layout.fragment_kursy, container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+       // recyclerView = view.findViewById(R.id.recyclerView);
         //initRecyclerView();
 
-        initializeAdapter();
+      //  initializeAdapter();
 
         return view;
     }
@@ -68,12 +68,12 @@ public class KursyFragment extends Fragment {
 //        recyclerView.setAdapter(adapter);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //    }
-
-    public void initializeAdapter() {
-        mRecyclerViewAdapter = new RecyclerViewAdapter(new ArrayList<Cryptocurrency>(), getContext());
-        recyclerView.setAdapter(mRecyclerViewAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
+//
+//    public void initializeAdapter() {
+//        mRecyclerViewAdapter = new RecyclerViewAdapter(new ArrayList<Cryptocurrency>(), getContext());
+//        recyclerView.setAdapter(mRecyclerViewAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//    }
 
 
     public void getBitcoinPLN() {

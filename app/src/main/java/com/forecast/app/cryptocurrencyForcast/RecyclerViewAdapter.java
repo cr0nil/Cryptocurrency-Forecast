@@ -8,59 +8,63 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.forecast.app.cryptocurrencyForcast.ViewHolder;
+import com.forecast.app.cryptocurrencyForcast.databinding.CryptocurrencyDataBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private List<Cryptocurrency> mData;
+    private ArrayList<Cryptocurrency> mData;
     private Context mContext;
+    LayoutInflater layoutInflater;
 
 
-    public RecyclerViewAdapter(List<Cryptocurrency> mData, Context mContext) {
+    public RecyclerViewAdapter(ArrayList<Cryptocurrency> mData, Context mContext) {
         this.mData = mData;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_crypto_layout, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+        if(layoutInflater == null){
+            layoutInflater = LayoutInflater.from(viewGroup.getContext());
+        }
+        CryptocurrencyDataBinding cryptocurrencyDataBinding = CryptocurrencyDataBinding.inflate(layoutInflater,viewGroup,false);
+
+        ViewHolder viewHolder = new ViewHolder(cryptocurrencyDataBinding);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        //viewHolder.name.setText(mData.get(position));
-        final Cryptocurrency crypto = mData.get(position);
-        viewHolder.getBinding().setVariable(com.forecast.app.cryptocurrencyForcast.BR.crypto, crypto.last);
-        viewHolder.getBinding().executePendingBindings();
+    public void onBindViewHolder( ViewHolder viewHolder, int i) {
+        final Cryptocurrency crypto = mData.get(i);
+        viewHolder.bind(crypto);
+        final CryptocurrencyDataBinding cryptocurrencyDataBinding = viewHolder.getmCryptocurrencyDataBinding();
+        cryptocurrencyDataBinding.setHandler(new ItemHandler(){
+            @Override
+            public void onItemClick() {
+                Toast.makeText(mContext,"kaczka",Toast.LENGTH_SHORT).show();
+            }
+        });
+//        viewHolder.getBinding().setVariable(com.forecast.app.cryptocurrencyForcast.BR.crypto, crypto.last);
+//        viewHolder.getBinding().executePendingBindings();
     }
+
+
 
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ViewDataBinding binding;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            binding = DataBindingUtil.bind(itemView);
-        }
-
-        public ViewDataBinding getBinding() {
-
-            return binding;
-
-        }
-    }
 
 
 }
