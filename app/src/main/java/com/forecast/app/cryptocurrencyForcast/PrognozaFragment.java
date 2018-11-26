@@ -4,12 +4,15 @@ package com.forecast.app.cryptocurrencyForcast;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 
 import com.forecast.app.api.ApiClient;
 import com.forecast.app.api.ApiClientUnplu;
@@ -21,6 +24,10 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -50,18 +57,39 @@ public class PrognozaFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_prognoza, container, false);
 
         View view = binding.getRoot();
+
+        ArrayAdapter<CharSequence> sequenceArrayAdapter = ArrayAdapter.createFromResource(getContext(),R.array.days,android.R.layout.simple_spinner_item);
+        sequenceArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinner.setAdapter(sequenceArrayAdapter);
+        binding.recycler2.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recycler2.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        binding.recycler2.setAdapter(new RecyclerViewAdapterForecast(forecastDays(), getContext()));
         return view;
+    }
+    ArrayList<ForecastDay>  forecastDays = new ArrayList<>();
+    private ArrayList<ForecastDay> forecastDays() {
+
+
+        return forecastDays;
+
     }
 
     public void getForecast(JSONArray jsonArray) {
 
         JSONArray data = new JSONArray();
         final RequestParams params = new RequestParams();
+        long currentTimeMillis = System.currentTimeMillis();
+        String day = "1543342800";
 
+        currentTimeMillis = (currentTimeMillis/1000);
         data = jsonArray;
         params.put("data", data);
         params.setUseJsonStreamer(true);
+        //Date d =
+       // params.put("forecast_to",(long)1458136800);
+//
         params.put("callback", "http://cr0nil.pythonanywhere.com/todo/api2");
+      //  params.put("forecast_to",1458136800);
         Log.i("params", params.toString());
 
         apiClientUnplu.postDate("", params, new JsonHttpResponseHandler() {
@@ -96,10 +124,34 @@ public class PrognozaFragment extends Fragment {
                         JSONArray array = (JSONArray) response.get("tasks");
                         JSONObject jsonObject = (JSONObject) array.get(0);
                         JSONArray array1 = (JSONArray) jsonObject.get("forecast");
-                        JSONObject object = (JSONObject) array1.get(0);
-                        Log.i("response2", array + "");
-                        forecastDay = new ForecastDay(object.getDouble("value"));
-                        binding.setForecastDay(forecastDay);
+                        JSONObject object2 = null;
+                        long day = 3600;
+                        long day2 = 1;
+
+                        long time = System.currentTimeMillis();
+                       long  time2 = time/1000;
+                        for (int i = 0; i < array1.length(); i++) {
+                            JSONObject object = (JSONObject) array1.get(i);
+                           // Log.i("time1", (time + day  )+"");
+
+                            if (object.getLong("timestamp") >= (time2 + day )  ){
+                                object2 = (JSONObject) array1.get(i);
+                                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+                                Date resultdate = new Date(object2.getLong("timestamp")*1000);
+//                                ForecastDay forecastDay = new ForecastDay(1);
+                                Log.i("time2", sdf.format(resultdate)+"");
+                                forecastDay = new ForecastDay(object2.getDouble("value"),sdf.format(resultdate)+"");
+                                forecastDays.add(forecastDay);
+                                binding.recycler2.getAdapter().notifyDataSetChanged();
+
+                                binding.setForecastDay(forecastDay);
+
+                            }
+                        }
+
+
+                       // Log.i("time", time + "");
+
                     }
 
                 } catch (JSONException e) {
