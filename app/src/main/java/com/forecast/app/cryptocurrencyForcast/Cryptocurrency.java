@@ -7,13 +7,15 @@ public class Cryptocurrency {
     double high;
     double vwap;
     double volume;
+    String nameKrypto;
 
-    public Cryptocurrency(double last, double low, double high, double vwap, double volume) {
+    public Cryptocurrency(double last, double low, double high, double vwap, double volume, String nameKrypto) {
         this.last = last;
         this.low = low;
         this.high = high;
         this.vwap = vwap;
         this.volume = volume;
+        this.nameKrypto = nameKrypto;
     }
 
     public double getLast() {
@@ -54,5 +56,13 @@ public class Cryptocurrency {
 
     public void setVolume(double volume) {
         this.volume = volume;
+    }
+
+    public String getNameKrypto() {
+        return nameKrypto;
+    }
+
+    public void setNameKrypto(String nameKrypto) {
+        this.nameKrypto = nameKrypto;
     }
 }

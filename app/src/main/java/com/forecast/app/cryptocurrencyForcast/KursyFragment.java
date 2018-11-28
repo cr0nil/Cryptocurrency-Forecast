@@ -4,12 +4,13 @@ package com.forecast.app.cryptocurrencyForcast;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.forecast.app.api.ApiClient;
 import com.forecast.app.cryptocurrencyForcast.databinding.FragmentKursyBinding;
@@ -30,9 +31,11 @@ public class KursyFragment extends Fragment {
     FragmentKursyBinding fragmentKursyBinding;
     Cryptocurrency cryptocurrency;
     ApiClient client;
-
-   // RecyclerViewAdapter mRecyclerViewAdapter;
-    //RecyclerView recyclerView;
+    ArrayList<Cryptocurrency> cryptocurrenciesList;
+    ArrayList<String> urlList;
+    ArrayList<String> cryptoName;
+    int j = 0;
+    int i;
 
 
     public KursyFragment() {
@@ -48,57 +51,77 @@ public class KursyFragment extends Fragment {
         View view = fragmentKursyBinding.getRoot();
 
         client = new ApiClient();
-        getBitcoinPLN();
 
-
-      //  View view =  inflater.inflate(R.layout.fragment_kursy, container, false);
-
-       // recyclerView = view.findViewById(R.id.recyclerView);
-        //initRecyclerView();
-
-      //  initializeAdapter();
+        fragmentKursyBinding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        fragmentKursyBinding.recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        fragmentKursyBinding.recycler.setAdapter(new RecyclerViewAdapter(getBitcoinPLN(), getContext()));
 
         return view;
     }
 
 
-//    public void initRecyclerView(){
+//    private ArrayList<Cryptocurrency> cryptocurrencies() {
+//        cryptocurrenciesList = new ArrayList<>();
+//        //Cryptocurrency cryptocurrency = new Cryptocurrency(1, 2, 3, 4, 5);
+////        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5));
+////        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5));
+////        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5));
+//        return cryptocurrenciesList;
 //
-//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mNames);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//    }
-//
-//    public void initializeAdapter() {
-//        mRecyclerViewAdapter = new RecyclerViewAdapter(new ArrayList<Cryptocurrency>(), getContext());
-//        recyclerView.setAdapter(mRecyclerViewAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //    }
 
 
-    public void getBitcoinPLN() {
-        String url = "json/BTCPLN/ticker.json";
+    public ArrayList<Cryptocurrency> getBitcoinPLN() {
+        cryptocurrenciesList = new ArrayList<>();
+        urlList = new ArrayList<>();
+        urlList.add("json/BTCPLN/ticker.json");
+        urlList.add("json/BTCEUR/ticker.json");
+        urlList.add("json/ETHPLN/ticker.json");
+//        urlList.add("json/ETHEUR/ticker.json");
+//        urlList.add("json/LTCPLN/ticker.json");
+//        urlList.add("json/LTCEUR/ticker.json");
+//        urlList.add("json/BCCPLN/ticker.json");
+//        urlList.add("json/BCCEUR/ticker.json");
 
-        client.getCryptocurrency(url, null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
+        cryptoName = new ArrayList<>();
+        cryptoName.add("BTC/PLN");
+        cryptoName.add("BTC/EUR");
+        cryptoName.add("ETH/PLN");
+//        cryptoName.add("ETH/EUR");
+//        cryptoName.add("LTC/PLN");
+//        cryptoName.add("LTC/EUR");
+//        cryptoName.add("BCC/PLN");
+//        cryptoName.add("BCC/EUR");
 
-                try {
-                    cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"));
-                    //kursyBinding.setCrypto(cryptocurrency);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+
+        for (i = 0; i < urlList.size(); i++) {
+
+            client.getCryptocurrency(urlList.get(i), null, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+
+                    try {
+                        cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"), "COS");
+                        cryptocurrenciesList.add(cryptocurrency);
+                        System.out.println(cryptocurrenciesList.get(j));
+                        fragmentKursyBinding.recycler.getAdapter().notifyDataSetChanged();
+                        j++;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("data", String.valueOf(response));
                 }
-                Log.i("data", String.valueOf(response));
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+            });
+        }
 
+        return cryptocurrenciesList;
     }
 
 }
