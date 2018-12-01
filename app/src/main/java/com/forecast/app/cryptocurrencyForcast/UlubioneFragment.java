@@ -41,8 +41,8 @@ public class UlubioneFragment extends Fragment {
 
     private ArrayList<Cryptocurrency> cryptocurrencies() {
         ArrayList<Cryptocurrency> cryptocurrenciesList = new ArrayList<>();
-        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5, "BTC/PLN"));
-        cryptocurrenciesList.add(new Cryptocurrency(6, 7, 8, 9, 10, "BTC/PLN"));
+//       ? cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5, "BTC/PLN"));
+//       cryptocurrenciesList.add(new Cryptocurrency(6, 7, 8, 9, 10, "BTC/PLN"));
         return cryptocurrenciesList;
 
     }

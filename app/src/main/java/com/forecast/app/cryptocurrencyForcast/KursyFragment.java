@@ -49,65 +49,59 @@ public class KursyFragment extends Fragment {
 
         fragmentKursyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_kursy, container, false);
         View view = fragmentKursyBinding.getRoot();
-
+        cryptocurrenciesList = new ArrayList<>();
+        urlList = new ArrayList<>();
         client = new ApiClient();
+        urlList.add("json/BTCPLN/ticker.json");
+        urlList.add("json/BTCEUR/ticker.json");
+        urlList.add("json/ETHPLN/ticker.json");
 
         fragmentKursyBinding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         fragmentKursyBinding.recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        fragmentKursyBinding.recycler.setAdapter(new RecyclerViewAdapter(getBitcoinPLN(), getContext()));
+        getBitcoinPLN();
+        fragmentKursyBinding.recycler.setAdapter(new RecyclerViewAdapter(cryptocurrencies(), getContext()));
+
+
 
         return view;
     }
 
 
-//    private ArrayList<Cryptocurrency> cryptocurrencies() {
-//        cryptocurrenciesList = new ArrayList<>();
-//        //Cryptocurrency cryptocurrency = new Cryptocurrency(1, 2, 3, 4, 5);
-////        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5));
-////        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5));
-////        cryptocurrenciesList.add(new Cryptocurrency(1, 2, 3, 4, 5));
-//        return cryptocurrenciesList;
-//
-//    }
+    private ArrayList<Cryptocurrency> cryptocurrencies() {
+
+        return cryptocurrenciesList;
+
+    }
 
 
-    public ArrayList<Cryptocurrency> getBitcoinPLN() {
-        cryptocurrenciesList = new ArrayList<>();
-        urlList = new ArrayList<>();
-        urlList.add("json/BTCPLN/ticker.json");
-        urlList.add("json/BTCEUR/ticker.json");
-        urlList.add("json/ETHPLN/ticker.json");
+    public void getBitcoinPLN() {
+
+
 //        urlList.add("json/ETHEUR/ticker.json");
-//        urlList.add("json/LTCPLN/ticker.json");
-//        urlList.add("json/LTCEUR/ticker.json");
-//        urlList.add("json/BCCPLN/ticker.json");
-//        urlList.add("json/BCCEUR/ticker.json");
+
 
         cryptoName = new ArrayList<>();
         cryptoName.add("BTC/PLN");
         cryptoName.add("BTC/EUR");
         cryptoName.add("ETH/PLN");
 //        cryptoName.add("ETH/EUR");
-//        cryptoName.add("LTC/PLN");
-//        cryptoName.add("LTC/EUR");
-//        cryptoName.add("BCC/PLN");
-//        cryptoName.add("BCC/EUR");
-
-
 
         for (i = 0; i < urlList.size(); i++) {
-
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             client.getCryptocurrency(urlList.get(i), null, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
 
                     try {
-                        cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"), "COS");
+                        cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"),"PLNY");
                         cryptocurrenciesList.add(cryptocurrency);
-                        System.out.println(cryptocurrenciesList.get(j));
                         fragmentKursyBinding.recycler.getAdapter().notifyDataSetChanged();
-                        j++;
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -120,8 +114,6 @@ public class KursyFragment extends Fragment {
                 }
             });
         }
-
-        return cryptocurrenciesList;
     }
 
 }
