@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.forecast.app.api.ApiClient;
 import com.forecast.app.cryptocurrencyForcast.databinding.FragmentKursyBinding;
@@ -55,12 +54,16 @@ public class KursyFragment extends Fragment {
         urlList.add("json/BTCPLN/ticker.json");
         urlList.add("json/BTCEUR/ticker.json");
         urlList.add("json/ETHPLN/ticker.json");
+        urlList.add("json/ETHEUR/ticker.json");
+        urlList.add("json/LTCPLN/ticker.json");
+        urlList.add("json/LTCEUR/ticker.json");
+        urlList.add("json/BCCPLN/ticker.json");
+        urlList.add("json/BCCEUR/ticker.json");
 
         fragmentKursyBinding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         fragmentKursyBinding.recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         getBitcoinPLN();
         fragmentKursyBinding.recycler.setAdapter(new RecyclerViewAdapter(cryptocurrencies(), getContext()));
-
 
 
         return view;
@@ -84,7 +87,11 @@ public class KursyFragment extends Fragment {
         cryptoName.add("BTC/PLN");
         cryptoName.add("BTC/EUR");
         cryptoName.add("ETH/PLN");
-//        cryptoName.add("ETH/EUR");
+        cryptoName.add("ETH/EUR");
+        cryptoName.add("LTC/PLN");
+        cryptoName.add("LTC/EUR");
+        cryptoName.add("BCC/PLN");
+        cryptoName.add("BCC/EUR");
 
         for (i = 0; i < urlList.size(); i++) {
             try {
@@ -98,10 +105,10 @@ public class KursyFragment extends Fragment {
                     super.onSuccess(statusCode, headers, response);
 
                     try {
-                        cryptocurrency = new Cryptocurrency(response.getDouble("last"), response.getDouble("low"), response.getDouble("high"), response.getDouble("vwap"), response.getDouble("volume"),"PLNY");
+                        cryptocurrency = new Cryptocurrency(response.getDouble("bid"), response.getDouble("ask"), response.getDouble("high"), response.getDouble("low"), cryptoName.get(j));
                         cryptocurrenciesList.add(cryptocurrency);
                         fragmentKursyBinding.recycler.getAdapter().notifyDataSetChanged();
-
+                        j++;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

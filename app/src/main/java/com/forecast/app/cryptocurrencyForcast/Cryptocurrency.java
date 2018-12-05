@@ -2,28 +2,35 @@ package com.forecast.app.cryptocurrencyForcast;
 
 public class Cryptocurrency {
     private static final String TAG = "Cryptocurrency";
-    double last;
+    double ask;
+    double bid;
     double low;
     double high;
-    double vwap;
-    double volume;
     String nameKrypto;
 
-    public Cryptocurrency(double last, double low, double high, double vwap, double volume, String nameKrypto) {
-        this.last = last;
+    public Cryptocurrency(double ask, double bid, double low, double high, String nameKrypto) {
+        this.ask = ask;
+        this.bid = bid;
         this.low = low;
         this.high = high;
-        this.vwap = vwap;
-        this.volume = volume;
         this.nameKrypto = nameKrypto;
     }
 
-    public double getLast() {
-        return last;
+
+    public double getAsk() {
+        return ask;
     }
 
-    public void setLast(double last) {
-        this.last = last;
+    public void setAsk(double ask) {
+        this.ask = ask;
+    }
+
+    public double getBid() {
+        return bid;
+    }
+
+    public void setBid(double bid) {
+        this.bid = bid;
     }
 
     public double getLow() {
@@ -40,22 +47,6 @@ public class Cryptocurrency {
 
     public void setHigh(double high) {
         this.high = high;
-    }
-
-    public double getVwap() {
-        return vwap;
-    }
-
-    public void setVwap(double vwap) {
-        this.vwap = vwap;
-    }
-
-    public double getVolume() {
-        return volume;
-    }
-
-    public void setVolume(double volume) {
-        this.volume = volume;
     }
 
     public String getNameKrypto() {

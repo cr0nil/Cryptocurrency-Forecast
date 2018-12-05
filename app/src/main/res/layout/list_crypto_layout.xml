@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Aktualna wartość"
+                    android:text="Kupno"
                     android:textColor="@android:color/black"
                     android:textSize="15sp" />
 
@@ -75,37 +75,63 @@
                     android:gravity="right"
                     android:hint="20000"
                     android:paddingRight="30dp"
-                    android:text="@{Double.toString(crypto.last)}"
+                    android:text="@{Double.toString(crypto.ask)}"
                     android:textSize="15sp" />
 
             </LinearLayout>
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sprzedaż"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textViewCurrent1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp">
+                android:gravity="right"
+                android:hint="20000"
+                android:paddingRight="30dp"
+                android:text="@{Double.toString(crypto.bid)}"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Największa w ostatnich 24h"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textViewMax24h"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:hint="20000"
-                    android:paddingRight="30dp"
-                    android:text="@{Double.toString(crypto.high)}"
-                    android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp">
 
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Największa w ostatnich 24h"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textViewMax24h"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:hint="20000"
+                android:paddingRight="30dp"
+                android:text="@{Double.toString(crypto.high)}"
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
