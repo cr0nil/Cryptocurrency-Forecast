@@ -1,6 +1,7 @@
 package com.forecast.app.cryptocurrencyForcast;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
@@ -24,7 +25,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     private Context mContext;
     LayoutInflater layoutInflater;
 
-
+String [] array;
     public RecyclerViewAdapter(ArrayList<Cryptocurrency> mData, Context mContext) {
         this.mData = mData;
         this.mContext = mContext;
@@ -43,21 +44,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+        ArrayList<String> strings;
         final Cryptocurrency crypto = mData.get(i);
         viewHolder.bind(crypto);
         final CryptocurrencyDataBinding cryptocurrencyDataBinding = viewHolder.getmCryptocurrencyDataBinding();
+        final ArrayList<String> finalStrings= new ArrayList<>();
         cryptocurrencyDataBinding.setHandler(new ItemHandler(){
             @Override
             public void onItemClick() {
-                Toast.makeText(mContext,"kaczka",Toast.LENGTH_SHORT).show();
+                finalStrings.add(cryptocurrencyDataBinding.getCrypto().getNameKrypto());
+//                finalStrings.add("BTC/PLN");
+
+                saveArray(finalStrings,"crypto",viewHolder.itemView.getContext());
+                Toast.makeText(mContext,cryptocurrencyDataBinding.getCrypto().getNameKrypto(),Toast.LENGTH_SHORT).show();
             }
         });
 //        viewHolder.getBinding().setVariable(com.forecast.app.cryptocurrencyForcast.BR.crypto, crypto.last);
 //        viewHolder.getBinding().executePendingBindings();
     }
 
-
+    public boolean saveArray(ArrayList<String> array, String arrayName, Context mContext) {
+        SharedPreferences prefs = mContext.getSharedPreferences("preferencename", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(arrayName +"_size", array.size());
+        for(int i=0;i<array.size();i++)
+            editor.putString(arrayName + "_" + i, array.get(i));
+        return editor.commit();
+    }
 
     @Override
     public int getItemCount() {
