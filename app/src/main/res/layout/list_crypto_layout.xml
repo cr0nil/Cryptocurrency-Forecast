@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{(v)-> handler.onItemClick()}"
+        android:onLongClick="@{(v)-> handler.onLongClick()}"
         android:orientation="vertical"
         android:padding="10dp"
         android:background="@color/product_list_item_bg"

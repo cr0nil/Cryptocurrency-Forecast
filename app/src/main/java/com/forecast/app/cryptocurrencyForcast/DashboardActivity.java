@@ -1,7 +1,9 @@
 package com.forecast.app.cryptocurrencyForcast;
 
+import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.forecast.app.cryptocurrencyForcast.databinding.ActivityDashboardBinding;
 
@@ -59,16 +62,38 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    public void showsplash() {
+
+        final Dialog dialog = new Dialog(DashboardActivity.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_loading);
+        dialog.setCancelable(true);
+        dialog.show();
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                {
+                    dialog.dismiss();
+                }
+            }
+        };
+        handler.postDelayed(runnable, 3000);
+    }
+
     private void switchFragmentByMenuItem(MenuItem menuItem) {
         int id = menuItem.getItemId();
 
         Log.i("id", menuItem.toString());
         if (id == R.id.nav_kursy) {
+            showsplash();
             setTitle("Kursy");
             KursyFragment fragment = new KursyFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment, "Kursy");
             fragmentTransaction.commit();
+
         } else if (id == R.id.nav_prognoza) {
             setTitle("Prognoza");
             PrognozaFragment fragment = new PrognozaFragment();
