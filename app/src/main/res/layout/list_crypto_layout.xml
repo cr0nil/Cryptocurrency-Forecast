@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data class = "CryptocurrencyDataBinding">
+    <data class="CryptocurrencyDataBinding">
 
         <variable
             name="crypto"
@@ -17,37 +17,69 @@
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{(v)-> handler.onItemClick()}"
+        android:onLongClick="@{(v)-> handler.onLongClick()}"
         android:orientation="vertical"
         android:padding="10dp"
-        android:onClick="@{(v)-> handler.onItemClick()}">
+        android:background="@color/product_list_item_bg"
+        android:descendantFocusability="blocksDescendants">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Waluta"
-                android:textColor="@android:color/black"
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/textViewCryptoName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:hint="nazwa"
-                android:paddingRight="30dp"
-                android:textColor="#0539f5"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Waluta"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/textViewCryptoName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="nazwa"
+                    android:paddingRight="30dp"
+                    android:text="@{crypto.nameKrypto}"
+                    android:textColor="#0539f5"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kupno"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/textViewCurrent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="20000"
+                    android:paddingRight="30dp"
+                    android:text="@{Double.toString(crypto.ask)}"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,18 +92,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Aktualna wartość"
+                android:text="Sprzedaż"
                 android:textColor="@android:color/black"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/textViewCurrent"
+                android:id="@+id/textViewCurrent1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:paddingRight="30dp"
                 android:hint="20000"
-                android:text="@{Double.toString(crypto.last)}"
+                android:paddingRight="30dp"
+                android:text="@{Double.toString(crypto.bid)}"
                 android:textSize="15sp" />
 
         </LinearLayout>
@@ -80,7 +112,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="10dp">
 
@@ -96,39 +127,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:paddingRight="30dp"
                 android:hint="20000"
+                android:paddingRight="30dp"
                 android:text="@{Double.toString(crypto.high)}"
                 android:textSize="15sp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Najmniejsza w ostatnich 24h"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/textViewMin24"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:paddingRight="30dp"
-                android:hint="20000"
-                android:text="@{Double.toString(crypto.low)}"
-                android:textSize="15sp" />
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Najmniejsza w ostatnich 24h"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/textViewMin24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:hint="20000"
+                    android:paddingRight="30dp"
+                    android:text="@{Double.toString(crypto.low)}"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingTop="10dp">-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/imgbtn_favorite"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="3dp"-->
+            <!--android:background="@null" />-->
+
+            <!--</LinearLayout>-->
         </LinearLayout>
 
-    </LinearLayout>
 </layout>
