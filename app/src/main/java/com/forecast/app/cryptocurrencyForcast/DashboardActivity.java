@@ -18,6 +18,8 @@ import android.view.Window;
 
 import com.forecast.app.cryptocurrencyForcast.databinding.ActivityDashboardBinding;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 public class DashboardActivity extends AppCompatActivity {
     public static final String apiKey = "afe26b6470a607194e6de734afb1b497596211699e7704348f315da0c74ac1e6";
     ActivityDashboardBinding dashboardBinding;
@@ -27,7 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
+        JodaTimeAndroid.init(this);
         setSupportActionBar(dashboardBinding.include.toolbar);
         DrawerLayout drawer = dashboardBinding.drawerLayout;
 

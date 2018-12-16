@@ -48,6 +48,11 @@ public class RecyclerViewAdapterForecast extends RecyclerView.Adapter<ViewHolder
             public void onItemClick() {
                 Toast.makeText(mContext,"kaczka",Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public boolean onLongClick() {
+                return false;
+            }
         });
 //        viewHolderForecast.getmForecastDataBinding().setVariable(BR.day, day.getValue());
 //        viewHolderForecast.getmForecastDataBinding().executePendingBindings();

@@ -11,9 +11,9 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="days">
-        <item>+2h</item>
-        <item>+4h</item>
-        <item>+6h</item>
-        <item>+8h</item>
+        <item>+dziś</item>
+        <item>jutro</item>
+        <item>za 2 dni</item>
+        <item>za 3 dni</item>
     </string-array>
 </resources>

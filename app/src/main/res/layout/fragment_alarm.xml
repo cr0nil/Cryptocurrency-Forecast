@@ -5,10 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".AlarmFragment">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Alarm" />
+        android:text="Alarm"
+        android:layout_marginTop="100dp"/>
 
 </FrameLayout>
