@@ -14,7 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.forecast.app.cryptocurrencyForcast.databinding.ActivityDashboardBinding;
 
@@ -23,7 +26,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 public class DashboardActivity extends AppCompatActivity {
     public static final String apiKey = "afe26b6470a607194e6de734afb1b497596211699e7704348f315da0c74ac1e6";
     ActivityDashboardBinding dashboardBinding;
-
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,21 @@ public class DashboardActivity extends AppCompatActivity {
         toggle.syncState();
 
         setupNavigationView(dashboardBinding.navView);
+
+        button = findViewById(R.id.btnRefresh);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTitle("Ulubione");
+                UlubioneFragment fragment = new UlubioneFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame, fragment, "Ulubione");
+                fragmentTransaction.commit();
+                Toast.makeText(getApplication(), "Odświeżono ulubione", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         setTitle("Kursy");
         KursyFragment fragment = new KursyFragment();
